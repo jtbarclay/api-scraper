@@ -3,10 +3,10 @@ require('dotenv').config();
 const axios = require('axios');
 
 // url to scrape
-const url = 'https://dev-api.rapidinterface.com/product_families.json';
+const url = process.env.API_URL;
 
 // auth
-const bearerToken = '';
+const bearerToken = process.env.BEARER_TOKEN;
 axios.defaults.headers.common = { 'Authorization': `Bearer ${bearerToken}` }
 
 // fetch
