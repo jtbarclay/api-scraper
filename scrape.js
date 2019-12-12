@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // auth
 let BEARER_TOKEN = '';
-axios.defaults.headers.common = { 'Authorization': `Bearer ${BEARER_TOKEN}` }
+// axios.defaults.headers.common = { 'Authorization': `Bearer ${BEARER_TOKEN}` }
 
 const rows = [];
 const results = [];
@@ -46,7 +46,7 @@ const getResults = async () => {
 
 async function hitEndpoints(endpoints) {
     for (let i = 0; i < endpoints.length; i++) {
-        await axios.get('https://dev-api.rapidinterface.com' + endpoints[i])
+        await axios.get('https://dev-api.rapidinterface.com' + endpoints[i], { headers: { 'Authorization': `Bearer ${BEARER_TOKEN}` } })
             .then((result) => {
                 results.push({ path: result.request.path, status: 'WORKING', data: result.data })
                 // console.log(result.request.path + ' WORKING ', result.data);
