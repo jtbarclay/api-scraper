@@ -7,6 +7,7 @@ const cheerio = require('cheerio');
 axios.defaults.headers.common = { 'Authorization': `Bearer ${process.env.BEARER_TOKEN}` }
 
 const rows = [];
+const results = [];
 
 // fetch
 const fetchData = async () => {
@@ -33,5 +34,38 @@ const getResults = async () => {
         console.log(err);
     }
 }
+
+async function hitEndpoints(endpoints) {
+    for (let i = 0; i < endpoints.length; i++) {
+        await axios.get('https://dev-api.rapidinterface.com' + endpoints[i], {headers: {'Authorization': `Bearer ${process.env.BEARER_TOKEN}`}})
+            .then( (result) => {
+                results.push({path: result.request.path, status: 'WORKING', data: result.data})
+                // console.log(result.request.path + ' WORKING ', result.data);
+            })
+            .catch( (err) => {
+                if (err.isAxiosError) {
+                    results.push({path: err.response.request.path, status: 'NOT WORKING'})
+                    // console.log(err.response.request.path + ' NOT WORKING');
+                }
+            })
+    }
+}
+
+async function run() {
+    await getResults()
+        .then( async () => {
+            await hitEndpoints(rows)
+                .then( () => {
+                    console.log(results);
+                })
+                .catch( (err) => {
+                    console.log(err);
+                })
+        })
+        .catch( (err) => {
+            console.log(err);
+        })
+}
+run();
 
 module.exports = getResults;
