@@ -21,9 +21,12 @@ const fetchData = async () => {
 const getResults = async () => {
     try {
         const $ = await fetchData();
-        $('.route_row').each(function(i, elem) {
-            rows[i] = $(':nth-child(3)', this).text();
+        $('.route_row').each(function (i, elem) {
+            if ($(':nth-child(2)', this).text() == '\n    GET\n  ') {
+                rows.push($(':nth-child(3)', this).text().replace('\n    ','').replace(':id','1').replace('(.:format)', '.json').replace('\n  ', ''));
+            }
         });
+        // console.log(rows);
         // rows.forEach(item => console.log(item));
         return rows;
     } catch (err) {
