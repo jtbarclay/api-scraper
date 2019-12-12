@@ -46,7 +46,7 @@ const getResults = async () => {
 
 async function hitEndpoints(endpoints) {
     for (let i = 0; i < endpoints.length; i++) {
-        await axios.get('https://dev-api.rapidinterface.com' + endpoints[i], { headers: { 'Authorization': `Bearer ${process.env.BEARER_TOKEN}` } })
+        await axios.get('https://dev-api.rapidinterface.com' + endpoints[i])
             .then((result) => {
                 results.push({ path: result.request.path, status: 'WORKING', data: result.data })
                 // console.log(result.request.path + ' WORKING ', result.data);
